@@ -1,17 +1,6 @@
-const statusDisplay = document.querySelector('.status');
 
-let GameActive = true;
-let currentPlayer = "X"
-
-//const player_O_Class = 'circle'
-//const player_X_Class = 'X'
-let gameState = ["","","","","","","","",""]
-
-const WinningMessage = () => `Player ${currentPlayer} has won!`
-const drawMessage = () => `Game Ended in a draw!`;
-const currentPlayerTurn = () => `It's ${currentPlayer}'s turn`;
-
-statusDisplay.innerHtml = currentPlayerTurn();
+const player_O_Class = 'O'
+const player_X_Class = 'X'
 
 
 const winningConditions = [ 
@@ -26,79 +15,89 @@ const winningConditions = [
 
 ]
 
+const cellElements = document.querySelectorAll('[data-cell]')
+const boardElement =document.getElementsByClassName('container')
+const restartbtn = document.getElementsByClassName('restart')
+let isPlayer_O_Turn = false;
 
-function handleCellPlayed(ClickedCell, ClickedCellIndex){
-    gameState[ClickedCellIndex] = currentPlayer;
-    ClickedCell.innerHtml = currentPlayerTurn();
+startGame();
+
+restartbtn.addEventListener(click, startGame);
+
+
+
+function startGame(){
+    isPlayer_O_Turn = false;
+    cellElements.forEach(cell => {
+        cell.classList.remove(player_O_Class);
+        cell.classList.remove(player_X_Class);
+        cell.removeEventListener('click', handleCellClick);
+        cell.addEventListener('click', handleCellClick, {once:true}) ; 
+      })
+
+      setContainerHoverClass();
+      winningMessageElement.classList.remove('show');
 }
 
-function handlePlayerChange(){
-    currentPlayer = currentPlayer = "X" ? "O" : "X";
-    statusDsiplay.innerHtml = currentPlayerTurn();
+function handleCellClick(e){
+    const cell = e.target;
+    const currclass= isPlayer_O_Turn ? player_O_Class : player_X_Class
+    placeMark(cell, currclass);
 
-
-
-}
-
-function handleResultValidation(){
-    let roundWon = false;
-   for(let i = 0 ; i <= 7 ; i ++){
-    const winCondition = winningConditions[i];
-    let a = gameState[winCondition[0]];
-    let b = gameState[winCondition[1]];
-    let c = gameState[winCondition[2]];
-    
-    if(a == "" || b === "" || c == "") {
-      continue;
+    if(checkWin(currclass))
+    {
+        endGame(false);
     }
-    if (a === b && b === c){
-        roundWon = true;
-        break
-
+    else if(isDraw()){
+        endGame(true);
     }
-   }
-
-   if(roundWon){
-    statusDisplay.innerHTML = WinningMessage();
-    gameActive = false;
-    return;
-   }
-
-   let roundDraw = !gameState.includes("");
-   if(roundDraw){
-    statusDisplay.innerHTML = drawMessage();
-    gameActive = false;
-    return;
-   }
-
-   handlePlayerChange();
-   
-
-}
-
-
-function handleCellClick(ClickedCellEvent){
-    const clickedCell = ClickedCellEvent.target;
-    const clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));
-
-    if(gameState[clickedCellIndex]  !== "" || !gameActive){
-      return;
+    else{
+        swapTurns();
+        setContainerHoverClass()
     }
-    handleCellPlayed(clickedCell, clickedCellIndex)
-    handleResultValidation();
-
 }
 
-function handleRestartGame(){
-    gameActive = true;
-    currentPlayer = "X";
-    gameState = ["", "", "", "","","","","",""];
-    statusDisplay.innerHTML = currentPlayerTurn();
-    document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
+function endGame(draw){
+    if(draw){
+        winningMessageElement.innerText = "It's A Draw!"
+    }
+    else{
+        winningMessageElement.innerText = `Player with ${isPlayer_O_Turn ? "0's" : "X's" } wins!`
+    }
 
+    winningMessageElement.classList.add('show')
 }
 
+function isDraw(){
+    return [...cellElements].every(cell => {
+        return cell.classList.contains(player_X_Class) || cell.classList.contains(player_O_Class)
+    })
+}
 
-document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', handleCellClick));
-document.querySelector('.restart').addEventListener('click', handleRestartGame);
+function placeMark(cell,currclass){
+ cell.classList.add(currclass);
+}
 
+function swapTurns(){
+    isPlayer_O_Turn = !isPlayer_O_Turn;
+}
+
+function setContainerHoverClass(){
+    boardElement.classList.remove(player_X_Class);
+    boardElement.classList.remove(player_O_Class);
+
+    if(isPlayer_O_Turn){
+        boardElement.classList.add(player_O_Class)
+    }
+    else{
+        boardElement.classList.add(player_X_Class)
+    }
+}
+
+function checkWin(currclass){
+    return winningConditions.some(combination => {
+        return combination.every.apply(index => {
+            return cellElements[index].classList.contains(currclass)
+        })
+    })
+}
