@@ -1,103 +1,100 @@
+"use strict";
 
-const player_O_Class = 'O'
-const player_X_Class = 'X'
+document.onkeypress = function(evt){
+    evt = evt || window.event;
+    var modal = document.getElementsByClassName("modal")[0];
+    if(evt.code === 27 ){
+        modal.style.display = "none";
 
+    }
+};
 
-const winningConditions = [ 
-    [0,1,2],
-    [3,4,5],
-    [6,7,8],
-    [0,3,6],
-    [1,4,7],
-    [2,5,8],
-    [0,4,8],
-    [2,4,6]
+window.onclick = function(evt){
+    var model = document.getElementsByClassName("modal")[0];
+    if(evt.target == modal){
+        modal.style.display = "none";
 
-]
+    }
+};
 
-const cellElements = document.querySelectorAll('[data-cell]')
-const boardElement =document.getElementsByClassName('container')
-const restartbtn = document.getElementsByClassName('restart')
-let isPlayer_O_Turn = false;
+function sumArray(array){
+    var sum = 0,
+    i = 0;
 
-startGame();
-
-restartbtn.addEventListener(click, startGame);
-
-
-
-function startGame(){
-    isPlayer_O_Turn = false;
-    cellElements.forEach(cell => {
-        cell.classList.remove(player_O_Class);
-        cell.classList.remove(player_X_Class);
-        cell.removeEventListener('click', handleCellClick);
-        cell.addEventListener('click', handleCellClick, {once:true}) ; 
-      })
-
-      setContainerHoverClass();
-      winningMessageElement.classList.remove('show');
+    for (i = 0; i < array.length; i++){
+        sum+= array[i];
+    }
+    return sum;
 }
 
-function handleCellClick(e){
-    const cell = e.target;
-    const currclass= isPlayer_O_Turn ? player_O_Class : player_X_Class
-    placeMark(cell, currclass);
-
-    if(checkWin(currclass))
-    {
-        endGame(false);
-    }
-    else if(isDraw()){
-        endGame(true);
-    }
-    else{
-        swapTurns();
-        setContainerHoverClass()
-    }
-}
-
-function endGame(draw){
-    if(draw){
-        winningMessageElement.innerText = "It's A Draw!"
-    }
-    else{
-        winningMessageElement.innerText = `Player with ${isPlayer_O_Turn ? "0's" : "X's" } wins!`
+function isInArray(element, array){
+    if(array.indexOf(element) > -1){
+        return true;
     }
 
-    winningMessageElement.classList.add('show')
+    return false;
 }
+function shuffleArray(array){
+    var counter = array.length,
+    temp,
+    index;
 
-function isDraw(){
-    return [...cellElements].every(cell => {
-        return cell.classList.contains(player_X_Class) || cell.classList.contains(player_O_Class)
-    })
-}
-
-function placeMark(cell,currclass){
- cell.classList.add(currclass);
-}
-
-function swapTurns(){
-    isPlayer_O_Turn = !isPlayer_O_Turn;
-}
-
-function setContainerHoverClass(){
-    boardElement.classList.remove(player_X_Class);
-    boardElement.classList.remove(player_O_Class);
-
-    if(isPlayer_O_Turn){
-        boardElement.classList.add(player_O_Class)
+    while(counter > 0){
+        index = Math.floor(Math.random() = counter);
+        counter--;
+        temp= array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
     }
-    else{
-        boardElement.classList.add(player_X_Class)
-    }
+    return array;
 }
 
-function checkWin(currclass){
-    return winningConditions.some(combination => {
-        return combination.every.apply(index => {
-            return cellElements[index].classList.contains(currclass)
-        })
-    })
+
+function intRandom(min, max){
+    var rand = min + Math.random() * (max + 1 - min);
+    return Math.floor(rand);
 }
+
+//Global variables
+
+var moves = 0,
+winner = 0,
+x = 0,
+o = 3,
+player = x,
+computer = o,
+whoseTurn = x,
+gameOver = false,
+score = {
+    ties: 0,
+    player:0,
+    computer:0
+
+},
+xText = "<span class=\"x\">&times;</class>",
+oText = "<span class=\"o\">o</class>",
+playerText = xText,
+computerText = oText,
+difficulty = 1,
+myGrid = null;
+
+//grid constructor
+function Grid(){
+    this.cells = newArray(9);
+
+}
+
+
+Grid.prototype.getFreeCellIndices = function(){
+    var i =0;
+    resultArray = [];
+
+    for(i = 0; i < this.cells.length; i++){
+        if(this.cells[i] === 0 ){
+            resultArray.push(i);
+        }
+    }
+    return resultArray;
+};
+
+

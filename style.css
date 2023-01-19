@@ -1,49 +1,129 @@
 body{
 
-    font-family:"Arial", sans serif;
+    font-family: 'Indie Flower', cursive;
+  background-color:rgb(32,32,32);
+    background-image:url('https://janschreiber.github.io/img2/black-chalk.jpg');
+    color:rgb(230,230,230);
+    text-align: center;
+    font-size: 0.7em;
+
 
 }
+h1{
+    line-height: 1em;
+    margin-bottom: 0;
+    padding-bottom:5px;
+    font-size: 2.8em;
+    font-weight: bold;
+}
+h2{
+    font-size:1.3em;
+    font-weight:bold;
+    padding:0;
+    margin:0;
+}
+h3{
+    font-size: 1.1em;
+    text-decoration: underline;
+    text-decoration-style: dashed;
+    padding: 0;
+    margin: 10px 0px 2 px 0;
 
-section{
+}
+table{
+    margin:2% auto;
+    border-collapse: collapse;
+}
+#table_game{
+    position: relative;
+    font-size: 120px;
+    margin: 1% auto;
+    border-collapse: collapse;
+
+}
+.td_game{
+    border:4px solid rgb(230,230,230);
+    width:90px;
+    height:90px;
+    padding:0;
+    vertical-align: middle;
     text-align: center;
 }
-.title{
-    font-size:80px;
-    color:black;
-    margin:5px auto;
-
-
-}
-.container{
-    display:grid;
-    grid-template-columns: repeat(3,auto);
-    width:460px;
-    margin: 10px auto;
-    background :#083346;
-    color:white;
-}
-.cell{
-    font-family: "Permanent Marker", cursive;
-    width:150px;
-    height:150px;
-    box-shadow: 5px 5px 3px 1px #046C95;
-    border:2px solid #046C95;
+.fixed{
+    width:90px;
+    height:90px;
+    line-height: 90px;
+    display: block;
+    overflow: hidden;
     cursor:pointer;
-    line-height: 100px;
-    font-size: 60px;
 }
-.status{
-    font-size: 50px;
-    color:#d7a62f;
-    margin:20px auto;
+.td_list{
+    text-align: center;
+    font-size: 1.3em;
+    font-weight:bold;
+}
+.th-list{
+    font-size: 1.3em;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: underline;
+}
+#restart{
+    font-size: 3em;
+    width:1em;
+    height:0.9em;
+    cursor:pointer;
+    margin:0 auto;
+    overflow: hidden;
+}
+.x{
+    color:darksalmon;
+    position:relative;
+    top:-8px;
+    font-size:1.2em;
+    cursor: default;
+}
+.o{
+    color:aquamarine;
+    position: relative;
+    top: -7px;
+    font-size: 1.0em;
+    cursor:default;
+}
+
+.modal{
+    display:none;
+    position: fixed;
+    z-index:1;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    overflow:auto;
+    background-color: black;
+    background-color: rgba(0,0,0,0.6);
 
 }
-.restart{
-    background-color: #083346;
-    width:200px;
-    height:50px;
-    font-size: 25px;
-    color:#5586e2;
-    box-shadow:2px 2px 2px 2px #0196C1;
-    border: 2px solid #0196C1;
+.modal-content p {
+    margin:0;
+    padding:0;
+}
+
+.close{
+    color:rgb(170,170,170);
+    float:right;     
+    position:relative ;
+    top:-25px;
+    right:-10px;
+    font-size: 34px;
+    font-weight:bold;
+}
+.close:hover,
+.close:focus{
+    color: black;
+    text-decoration: none;
+    cursor:pointer;
+}
+.win-color{
+    background-color: rgb(240,240,240);
 }
